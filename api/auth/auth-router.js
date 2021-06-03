@@ -15,6 +15,9 @@ User
 .then((user)=> res.status(200).json(user))
 .catch(next);
 })
+
+
+
 /**
   1 [POST] /api/auth/register { "username": "sue", "password": "1234" }
 
@@ -50,7 +53,7 @@ User
 
           req.session.user = user;
   
-          res.json({ message: `Welcome back ${user.username}, have a cookie!` });
+          res.json({ message: `welcome ${user.username}`});
         } else {
      
           res.status(401).json({ message: 'Invalid Credentials' });

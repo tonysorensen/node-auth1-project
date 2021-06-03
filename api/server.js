@@ -24,7 +24,7 @@ const authRouter = require('./auth/auth-router')
 const server = express();
 
 const sessionConfig = {
-name: 'cookieJar',
+name: 'chocolatechip',
 secret: 'keep your hands out',
 cookie: {
   maxAge: 1000 * 60 * 60,
@@ -33,7 +33,7 @@ cookie: {
 },
 rolling: true,
 resave: false,
-saveUninitialized: false,
+ saveUninitialized: false,
 store: new KnexSessionStore({
   knex: require('../data/db-config'),
   tablename: 'sessions',
