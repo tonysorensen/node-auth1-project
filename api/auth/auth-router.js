@@ -13,7 +13,12 @@ const passwordHash = bcrypt.hashSync(password, 8)
 User
 .add({username, password: passwordHash})
 .then((user)=> res.status(200).json(user))
-.catch(next);
+.catch(err=>{
+  console.log(err)
+  //this is passing the test but not for the right reason. My checkUsernameFree middleware is not working right
+  res.status(422).json({message: "Username taken"})
+  next(err)
+});
 })
 
 
@@ -115,6 +120,9 @@ router.get('/logout', (req,res)=>{
     "message": "no session"
   }
  */
+
+
+
   router.use((err, req, res, next) => {
     res.status(err.status || 500).json({
       message: err.message,

@@ -25,9 +25,10 @@ function restricted(req,res,next) {
 */
 function checkUsernameFree(req,res,next) {
 const {username} = req.body
-  
+console.log("username in checkUsernameFree", username)
 if(User.findBy({username})
   .first()){
+   
 res.status(422).json({message: "Username taken"})
   }else {
 next()
@@ -45,7 +46,7 @@ next()
 */
 function checkUsernameExists(req,res,next) {
   const {username} = req.body
-  
+ console.log('username in the middleware',username) 
   if(!User.findBy({username})
     .first()){
   res.status(401).json({message: "Invalid Credentials"})
