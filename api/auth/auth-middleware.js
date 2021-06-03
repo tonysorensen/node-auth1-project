@@ -23,7 +23,7 @@ function restricted(req,res,next) {
   }
 */
 function checkUsernameFree(req,res,next) {
-
+if (req.body)
 }
 
 /*
@@ -47,10 +47,18 @@ function checkUsernameExists(req,res,next) {
   }
 */
 function checkPasswordLength(req,res,next) {
-
+  const password = req.body.password
+if (!password || password.length <= 3){
+  res.status(422).json({message: "Password must be longer than 3 chars"})
+} else {
+  next();
+}
 }
 
 // Don't forget to add these to the `exports` object so they can be required in other modules
 module.exports = {
-  restricted
+  restricted,
+  checkUsernameFree,
+  checkUsernameExists,
+  checkPasswordLength
 }
