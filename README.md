@@ -41,9 +41,9 @@ Write the following user access functions inside `api/users/users-model.js`:
 Write the following auth middlewares inside `api/auth/auth-middleware.js`:
 
 - [x] `restricted`
-- [ ] `checkUsernameFree`
+- [x] `checkUsernameFree`
 - [x] `checkPasswordLength`
-- [ ] `checkUsernameExists`
+- [x] `checkUsernameExists`
 
 #### 2C - Endpoints
 
@@ -52,9 +52,9 @@ Authentication will be tracked using sessions and cookies. See `api/server.js` f
 Write the following endpoints. The first one belongs inside `api/users/users-router.js` and the rest inside `api/auth/auth-router.js`:
 
 - [x] `[GET] /api/users`
-- [ ] `[POST] /api/auth/register`
-- [ ] `[POST] /api/auth/login`
-- [ ] `[GET] /api/auth/logout`
+- [x] `[POST] /api/auth/register`
+- [x] `[POST] /api/auth/login`
+- [x] `[GET] /api/auth/logout`
 
 #### Users Schema
 

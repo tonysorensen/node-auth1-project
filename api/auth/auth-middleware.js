@@ -1,3 +1,4 @@
+const User = require('../users/users-model')
 /*
   If the user does not have a session saved in the server
 
@@ -23,8 +24,16 @@ function restricted(req,res,next) {
   }
 */
 function checkUsernameFree(req,res,next) {
-if (req.body)
+const {username} = req.body
+  
+if(User.findBy({username})
+  .first()){
+res.status(422).json({message: "Username taken"})
+  }else {
+next()
+  }
 }
+
 
 /*
   If the username in req.body does NOT exist in the database
@@ -35,7 +44,14 @@ if (req.body)
   }
 */
 function checkUsernameExists(req,res,next) {
-
+  const {username} = req.body
+  
+  if(!User.findBy({username})
+    .first()){
+  res.status(401).json({message: "Invalid Credentials"})
+    }else {
+  next()
+    }
 }
 
 /*

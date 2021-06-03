@@ -1,9 +1,20 @@
 const router = require('express').Router();
-
+const User = require('../users/users-model');
+const bcrypt = require('bcryptjs')
+const {checkUsernameFree, checkUsernameExists, checkPasswordLength} = require('./auth-middleware')
 // Require `checkUsernameFree`, `checkUsernameExists` and `checkPasswordLength`
 // middleware functions from `auth-middleware.js`. You will need them here!
 
+router.post('/register',(checkUsernameFree,checkUsernameExists,checkPasswordLength),(req,res,next)=>{
+const {username, password}= req.body;
 
+const passwordHash = bcrypt.hashSync(password, 8)
+
+User
+.add({username, password: passwordHash})
+.then((user)=> res.status(200).json(user))
+.catch(next);
+})
 /**
   1 [POST] /api/auth/register { "username": "sue", "password": "1234" }
 
@@ -26,7 +37,28 @@ const router = require('express').Router();
     "message": "Password must be longer than 3 chars"
   }
  */
+  router.post('/login',checkUsernameExists, (req, res, next) => {
+    const { username, password } = req.body;
+  
+    User
+      .findBy({ username })
+      .first()
+      .then(user => {
+ 
+        if (user && bcrypt.compareSync(password, user.password)) {
+     
 
+          req.session.user = user;
+  
+          res.json({ message: `Welcome back ${user.username}, have a cookie!` });
+        } else {
+     
+          res.status(401).json({ message: 'Invalid Credentials' });
+        }
+      })
+      .catch(next);
+  });
+  
 
 /**
   2 [POST] /api/auth/login { "username": "sue", "password": "1234" }
@@ -44,6 +76,26 @@ const router = require('express').Router();
   }
  */
 
+router.get('/logout', (req,res)=>{
+  if (req.session&& req.session.user) {
+      req.session.destroy(err=>{
+        if(err){
+          res.json({
+            message: err
+          })
+        } else{
+          res.status(200).json({
+            message: "logged out"
+          })
+        } 
+      })
+    }else {
+          res.status(200).json({
+            message: "no session"
+          })
+        }
+      });
+    
 
 /**
   3 [GET] /api/auth/logout
@@ -60,7 +112,13 @@ const router = require('express').Router();
     "message": "no session"
   }
  */
-
+  router.use((err, req, res, next) => {
+    res.status(err.status || 500).json({
+      message: err.message,
+      stack: err.stack,
+      customMessage: 'Something went wrong inside the auth router'
+    });
+  });
  
 // Don't forget to add the router to the `exports` object so it can be required in other modules
 module.exports = router
