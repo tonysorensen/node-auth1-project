@@ -5,7 +5,7 @@ const {checkUsernameFree, checkUsernameExists, checkPasswordLength} = require('.
 // Require `checkUsernameFree`, `checkUsernameExists` and `checkPasswordLength`
 // middleware functions from `auth-middleware.js`. You will need them here!
 
-router.post('/register',(checkUsernameFree,checkUsernameExists,checkPasswordLength),(req,res,next)=>{
+router.post('/register',checkUsernameFree,checkUsernameExists,checkPasswordLength,(req,res,next)=>{
 const {username, password}= req.body;
 
 const passwordHash = bcrypt.hashSync(password, 8)
@@ -16,7 +16,6 @@ User
 .catch(err=>{
   console.log(err)
   //this is passing the test but not for the right reason. My checkUsernameFree middleware is not working right
-  res.status(422).json({message: "Username taken"})
   next(err)
 });
 })

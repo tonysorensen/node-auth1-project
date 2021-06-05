@@ -25,9 +25,7 @@ function restricted(req,res,next) {
 */
 function checkUsernameFree(req,res,next) {
 const {username} = req.body
-console.log("username in checkUsernameFree", username)
-if(User.findBy({username})
-  .first()){
+if(User.findBy(username)){
    
 res.status(422).json({message: "Username taken"})
   }else {
